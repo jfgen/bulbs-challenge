@@ -1,6 +1,6 @@
 // This code is my attempt to answer the challenge at https://goo.gl/dShDe2
 
-var bulbsNum = 10; // Number of switches and bulbs
+var bulbsNum = 5000000; // Number of switches and bulbs
 var switches = [];
 
 // initializing the state of each switch
@@ -9,11 +9,52 @@ for(i=0;i < bulbsNum; i++) {
 };
 
 //Getting the input
-var input =  [[3, 6],[0, 4], [7, 3], [9, 9]];
+//var input =  [[3, 6],[0, 4], [7, 3], [9, 9]];
+var input = [];
 
-inputConvert(input);
+readFile();
 
+
+// V2.0 Trying to read from a file with *gasp AJAX
+function readFile() {
+	$.ajax({
+		url: "lots_of_switches.txt",
+		async: false,
+		success: function(data) {
+				var text = String(data);
+				slicedText = text.split(/\n/);
+			 },
+	 });
+
+	 // Going through the ranges, breaking and storing them into an array, god help me...
+	 ranges= [];
+
+	 for (var i = 0; i < slicedText.length; i++) {
+		 ranges[i] = slicedText[i].split(" ");
+	 }
+
+	 //breakRange(input);
+}
+convertToNum(ranges);
+
+function convertToNum() {
+	for (var i = 0; i < ranges.length; i++) {
+		for (var j = 0; j < ranges[i].length; j++) {
+			ranges[i][j]=Number(ranges[i][j]);
+		}
+	}
+
+};
+
+// function breakRange() {
+// 	for (var i = 0; i < input.length; i++) {
+//
+// 	}
+// };
+
+inputConvert(ranges);
 function inputConvert(toggled) {
+	console.log(toggled.length);
 	// Going through the input array and sending the intervals to the toggleSwitch function
 	for (var i = 0; i < toggled.length; i++) {
 		toggleSwitch(toggled[i][0], toggled[i][1]);
